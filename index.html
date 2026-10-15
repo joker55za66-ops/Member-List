@@ -1,0 +1,447 @@
+<title>Skidma Members</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+/* === SKIDMA MEMBERS — dark monochrome, militant grid === */
+/* Layout: centered narrow column, tab filter, section headers, 3-col card grid */
+:root {
+  --bg:        #0d0d0d;
+  --surface:   #181818;
+  --border:    #2a2a2a;
+  --fg:        #e8e8e8;
+  --fg-muted:  #6b6b6b;
+  --fg-dim:    #3a3a3a;
+  --accent:    #c8c8c8;
+  --tab-active:#e8e8e8;
+  --badge-bg:  #222222;
+  --badge-fg:  #888888;
+  --online:    #4caf50;
+  --offline:   #444444;
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:        #111111;
+    --surface:   #1a1a1a;
+    --border:    #2e2e2e;
+    --fg:        #ebebeb;
+    --fg-muted:  #707070;
+    --fg-dim:    #3d3d3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:        #0d0d0d;
+  --surface:   #181818;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  margin: 0;
+  min-height: 100%;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+}
+
+/* Background blur image */
+.bg-blur {
+  position: fixed;
+  inset: 0;
+  background-image: var(--bg-img);
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.18) blur(2px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* === TABS === */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 0 24px;
+}
+
+.tab-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  color: var(--fg-muted);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.tab-btn:hover {
+  border-color: rgba(255,255,255,0.22);
+  color: var(--fg);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.tab-btn.active {
+  background: var(--fg);
+  border-color: rgba(255,255,255,0.5);
+  color: var(--bg);
+  box-shadow: 0 0 22px rgba(220,220,220,0.18), 0 4px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* === SECTION HEADER === */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 200px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.25em;
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 0 0 18px rgba(200,200,200,0.18), 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.section-count {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--fg-dim);
+  letter-spacing: 0;
+  background: var(--badge-bg);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+/* === CARD GRID === */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 640px) {
+  .card-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 641px) and (max-width: 800px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Leader gets its own centered grid */
+.card-grid.leaders-grid {
+  grid-template-columns: 340px;
+  justify-content: center;
+}
+@media (max-width: 640px) {
+  .card-grid.leaders-grid { grid-template-columns: 1fr; }
+}
+
+/* === MEMBER CARD === */
+.card {
+  background: linear-gradient(160deg, #1f1f1f 0%, #141414 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 13px;
+  padding: 13px 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 2px 14px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(0,0,0,0.25);
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.13);
+  box-shadow:
+    0 6px 22px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+}
+
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #2b2b2b, #191919);
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 26px;
+  height: 26px;
+  opacity: 0.25;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+}
+.status-dot.online  { background: var(--online); }
+.status-dot.offline { background: var(--offline); }
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.card-badge {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--badge-fg);
+  background: var(--badge-bg);
+  border: 1px solid var(--fg-dim);
+  border-radius: 3px;
+  padding: 2px 7px;
+}
+
+.card-badge.leader-badge {
+  color: var(--accent);
+  border-color: #4a4a4a;
+}
+
+/* Social link button */
+.social-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  background: linear-gradient(145deg, #282828, #1c1c1c);
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.social-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--fg);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--fg-muted);
+  font-size: 13px;
+  display: none;
+}
+.empty-state.visible { display: block; }
+
+/* Group tag */
+.group-tag {
+  font-size: 10px;
+  color: var(--fg-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+</style>
+
+<div class="bg-blur" id="bgBlur"></div>
+
+<div class="page">
+  <!-- TAB FILTER -->
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-filter="all">ALL</button>
+    <button class="tab-btn" data-filter="skidma">SKIDMA</button>
+    <button class="tab-btn" data-filter="realsussus">REALSUSSUS</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content"></div>
+</div>
+
+<script>
+// ============================================================
+// ✏️  EDIT YOUR MEMBERS HERE
+// group: "skidma" | "realsussus"
+// role:  "leader" | "member"
+// online: true | false
+// facebook: "https://..." or "" to hide the button
+// avatar: "https://..." or "" for default icon
+// ============================================================
+const MEMBERS = [
+  // --- SKIDMA ---
+  // { name: "Name Skidma", group: "skidma", role: "leader", online: true, facebook: "", avatar: "" },
+  // { name: "Name Skidma", group: "skidma", role: "member", online: false, facebook: "", avatar: "" },
+
+  // --- REALSUSSUS ---
+  // { name: "Name Realsussus", group: "realsussus", role: "leader", online: true, facebook: "", avatar: "" },
+  // { name: "Name Realsussus", group: "realsussus", role: "member", online: false, facebook: "", avatar: "" },
+];
+// ============================================================
+
+const DEFAULT_LOGO = `
+<svg class="avatar-placeholder" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+  <path d="M16 4L16 28M4 10L28 10M4 22L28 22" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+  <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.6"/>
+</svg>`;
+
+function buildCard(m) {
+  const avatarHtml = m.avatar
+    ? `<img src="${m.avatar}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${DEFAULT_LOGO.replace(/"/g,"'")}'">`
+    : DEFAULT_LOGO;
+
+  const fbBtn = m.facebook
+    ? `<a class="social-btn" href="${m.facebook}" target="_blank" rel="noopener" title="Facebook">f</a>`
+    : `<span class="social-btn" style="opacity:0.3;cursor:default">f</span>`;
+
+  const badgeClass = m.role === 'leader' ? 'card-badge leader-badge' : 'card-badge';
+  const badgeLabel = m.role === 'leader' ? 'LEADER' : 'MEMBER';
+  const dotClass   = m.online ? 'online' : 'offline';
+
+  return `
+    <div class="card" data-group="${m.group}" data-role="${m.role}">
+      <div class="avatar-wrap">
+        <div class="avatar">${avatarHtml}</div>
+        <span class="status-dot ${dotClass}"></span>
+      </div>
+      <div class="card-info">
+        <div class="card-name">${m.name}</div>
+        <span class="${badgeClass}">${badgeLabel}</span>
+      </div>
+      ${fbBtn}
+    </div>`;
+}
+
+function render(filter) {
+  const content = document.getElementById('content');
+  const groups  = filter === 'all'
+    ? ['skidma','realsussus']
+    : [filter];
+
+  let html = '';
+  let totalVisible = 0;
+
+  for (const grp of groups) {
+    const leaders = MEMBERS.filter(m => m.group === grp && m.role === 'leader');
+    const members = MEMBERS.filter(m => m.group === grp && m.role === 'member');
+
+    if (filter === 'all') {
+      // Show group label when showing all
+      if (leaders.length || members.length) {
+        html += `<div class="group-tag" style="text-align:center;margin:18px 0 6px">${grp.toUpperCase()}</div>`;
+      }
+    }
+
+    if (leaders.length) {
+      html += `
+        <div class="section-header">
+          <div class="section-line"></div>
+          <div class="section-title">LEADERS <span class="section-count">${leaders.length}</span></div>
+          <div class="section-line"></div>
+        </div>
+        <div class="card-grid leaders-grid">${leaders.map(buildCard).join('')}</div>`;
+      totalVisible += leaders.length;
+    }
+
+    if (members.length) {
+      html += `
+        <div class="section-header">
+          <div class="section-line"></div>
+          <div class="section-title">MEMBERS <span class="section-count">${members.length}</span></div>
+          <div class="section-line"></div>
+        </div>
+        <div class="card-grid">${members.map(buildCard).join('')}</div>`;
+      totalVisible += members.length;
+    }
+  }
+
+  if (totalVisible === 0) {
+    html = `<div class="empty-state visible">No members yet — add them in the MEMBERS array.</div>`;
+  }
+
+  content.innerHTML = html;
+}
+
+// Tab switching
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.filter);
+});
+
+render('all');
+</script>
